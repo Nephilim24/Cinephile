@@ -1,0 +1,33 @@
+.nav {
+  padding: 25px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(20, 20, 20, 0.5);
+  z-index: 10;
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+
+    &-link {
+      font-family: var(--font-family);
+      font-weight: 700;
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.6);
+      transition: all .5s;
+
+      &:hover {
+        transition: all .5s;
+      }
+    }
+  }
+}
