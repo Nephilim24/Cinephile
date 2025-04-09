@@ -6,6 +6,7 @@
   width: 100%;
   background: rgba(20, 20, 20, 0.5);
   z-index: 10;
+  transition: all .5s;
 
   &__content {
     display: flex;

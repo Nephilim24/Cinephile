@@ -122,4 +122,16 @@ img {
   right: 0;
   top: 0;
   z-index: -1;
+}
+
+main {
+  padding: 50px 0;
+}
+
+.mat h2 {
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 22px;
+  color: #fff;
+  margin-left: 100px;
 }/*# sourceMappingURL=main.css.map */
