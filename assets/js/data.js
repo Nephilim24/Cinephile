@@ -25,7 +25,7 @@ window.addEventListener('DOMContentLoaded', () => {
       init();
       update();
       setMatData();
-      setTopData();
+      // setTopData();
       setInterval(update, 10000);
     } catch (error) {
       console.error(error);
@@ -78,6 +78,8 @@ window.addEventListener('DOMContentLoaded', () => {
       data.forEach(item => {
         const matItem = document.createElement('div');
         matItem.classList.add('swiper-slide');
+        matItem.setAttribute('data-id', item.id);
+        matItem.setAttribute('data-type', matSwiper[i].getAttribute('id'));
         matItem.innerHTML = (`<img src="${imgPathMini}${item.poster_path}" alt="">`);
         wrapper.append(matItem);
       });
@@ -101,9 +103,69 @@ window.addEventListener('DOMContentLoaded', () => {
 
     }
   }
-})
 
-async function setTopData() {
+  window.addEventListener('click', (e) => {
+    const slide = e.target;
+    const parent = slide.closest('.swiper-slide');
+    if (parent) {
+      const id = parent.getAttribute('data-id');
+      const type = parent.getAttribute('data-type');
+      getDetail(id, type);
+    }
+  });
+
+  async function getDetail(id, type) {
+    const typeData = type === 'movies' ? 'movie' : 'tv';
+    const URL = `https://api.themoviedb.org/3/${typeData}/${id}?language=ru-RU`
+    try {
+      const response = await fetch(URL, options);
+      const data = await response.json();
+      console.log(data);
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getMovieGenres() {
+    const URL = 'https://api.themoviedb.org/3/genre/movie/list?language=ru';
+    try {
+      const response = await fetch(URL, options)
+      const data = await response.json();
+      console.log('Жанры фильмов:', data);
+
+      return data;
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
+
+  async function getTvGenres() {
+    const URL = 'https://api.themoviedb.org/3/genre/tv/list?language=ru';
+    try {
+      const response = await fetch(URL, options)
+      const data = await response.json();
+      console.log('Жанры ТВ сериалов:', data);
+
+
+      return data;
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
+
+  getMovieGenres();
+  getTvGenres();
+  
+  
+});
+
+
+
+/*async function setTopData() {
   for (let i = 0; i < topSwiper.length; i++) {
     const wrapper = topSwiper[i].querySelector('.swiper-wrapper')
     const data = await getTopData();
@@ -127,4 +189,4 @@ async function getTopData() {
     console.log(error);
 
   }
-}
+} */
