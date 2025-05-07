@@ -157,10 +157,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  getMovieGenres();
-  getTvGenres();
-  
-  
+  // getMovieGenres();
+  // getTvGenres();
+
+
 });
 
 
