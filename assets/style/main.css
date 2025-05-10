@@ -142,6 +142,10 @@ main {
   padding: 50px 0;
 }
 
+#tvs h2 {
+  margin-top: 50px;
+}
+
 .mat h2 {
   font-family: var(--font-family);
   font-weight: 700;
@@ -151,13 +155,24 @@ main {
 }
 .mat__info {
   min-height: 700px;
-  background: linear-gradient(90deg, #000 4.69%, rgba(0, 0, 0, 0.2) 100%, rgba(0, 0, 0, 0) 68.23%);
+  background: linear-gradient(90deg, #000 30%, rgba(0, 0, 0, 0.2) 100%, rgba(0, 0, 0, 0) 68.23%);
   padding: 114px 50px;
+  position: relative;
 }
 .mat__info-content {
   display: flex;
   flex-direction: column;
   gap: 30px;
+}
+.mat__info-content img {
+  position: absolute;
+  width: 70%;
+  height: 100%;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 .mat__info-content h2 {
   font-family: var(--font-family);
@@ -185,9 +200,19 @@ main {
   border-radius: 25px;
   display: flex;
   align-items: center;
+  transition: all 0.5s;
+}
+.mat__info-content-actors li:hover {
+  background: #fff;
+  transition: all 0.5s;
+}
+.mat__info-content-actors li:hover span {
+  color: #141414;
+  transition: all 0.5s;
 }
 .mat__info-content-actors li img {
   border-radius: 50px;
+  margin-left: 2px;
 }
 .mat__info-content-actors li span {
   display: inline-block;
@@ -198,6 +223,7 @@ main {
   text-align: center;
   color: #fff;
   padding: 12px 15px 12px 10px;
+  transition: all 0.5s;
 }
 .mat__info-content button {
   background: #149a03;
@@ -207,6 +233,11 @@ main {
   max-width: max-content;
   display: flex;
   align-items: center;
+  transition: all 0.5s;
+}
+.mat__info-content button:hover {
+  background: #0d7000;
+  transition: all 0.5s;
 }
 .mat__info-content button svg {
   margin: 0 10px 0 0;

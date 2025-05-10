@@ -13,7 +13,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   let currentIndex = 0;
   let nowMovies;
-  let headerBg, nextBg, titleElem, descrElem, headerNextButton, matSwiper, topSwiper;
+  let headerBg, nextBg, titleElem, descrElem, headerNextButton, matSwiper, topSwiper, matInfo;
 
 
   async function getNowMoviews() {
@@ -49,6 +49,7 @@ window.addEventListener('DOMContentLoaded', () => {
     headerNextButton.append(nextBg);
     headerNextButton.addEventListener('click', update);
     matSwiper = document.querySelectorAll('.mat');
+    matInfo = document.querySelector('.mat__info')
     topSwiper = document.querySelector('.top');
   }
 
@@ -111,6 +112,7 @@ window.addEventListener('DOMContentLoaded', () => {
       const id = parent.getAttribute('data-id');
       const type = parent.getAttribute('data-type');
       getDetail(id, type);
+      getActors(id);
     }
   });
 
@@ -122,10 +124,43 @@ window.addEventListener('DOMContentLoaded', () => {
       const data = await response.json();
       console.log(data);
 
+      const content = matInfo.querySelector('.mat__info-content');
+      console.log(await getActors(data.id));
+
+      content.innerHTML = '';
+      content.innerHTML = `
+      <h2>${data.title}</h2>
+      <p>${data.overview}</p>
+      <p>${data.release_date}\t${data.genres.map(genre => genre.name)}\t${data.runtime}</p>
+      <img src="${imgPath}${data.backdrop_path}">
+      `
+      // <p>${getActors(data.id).map(name)}</p>
+
       return data;
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async function getActors(id) {
+    const URL = `https://api.themoviedb.org/3/movie/${id}/credits?language=ru-RU`;
+    try {
+      const response = await fetch(URL, options);
+      const data = await response.json();
+      const actors = data.cast.splice(0, 4);
+      return actors;
+
+
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
+
+  function formalMinToHours(mins) {
+    const hrs = Math.floor(mins / 60);
+    const min = mins % 60;
+    return `${hrs}:${min.toString().padEnd(2, '0')}`;
   }
 
   async function getMovieGenres() {
