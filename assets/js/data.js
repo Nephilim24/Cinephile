@@ -118,25 +118,31 @@ window.addEventListener('DOMContentLoaded', () => {
 
   async function getDetail(id, type) {
     const typeData = type === 'movies' ? 'movie' : 'tv';
-    const URL = `https://api.themoviedb.org/3/${typeData}/${id}?language=ru-RU`
+    const URL = `https://api.themoviedb.org/3/${typeData}/${id}?language=ru-RU`;
     try {
       const response = await fetch(URL, options);
       const data = await response.json();
       console.log(data);
 
       const content = matInfo.querySelector('.mat__info-content');
-      console.log(await getActors(data.id));
+      // console.log(await getActors(data.id));
 
       content.innerHTML = '';
-      content.innerHTML = `
-      <h2>${data.title}</h2>
-      <p>${data.overview}</p>
-      <p>${data.release_date}\t${data.genres.map(genre => genre.name)}\t${data.runtime}</p>
-      <img src="${imgPath}${data.backdrop_path}">
-      `
-      // <p>${getActors(data.id).map(name)}</p>
+      console.log(type);
 
-      return data;
+      content.innerHTML = `
+        <h2>${data.title ?? data.name}</h2>
+        <p>${data.overview}</p>
+      <p>
+        ${data.release_date ?? data.first_air_date}
+        \t${data.genres.map(genre => `${capitalize(genre.name)} `)}
+        \t${formalMinToHours(data.runtime) ?? `${data.episode_run_time[0]}`}
+      </p>
+        <img src="${imgPath}${data.backdrop_path}">
+      `
+      document.getElementById(type).querySelector('.mat__info').classList.add('active');
+
+      // <p>${getActors(data.id).map(name)}</p>
     } catch (error) {
       console.log(error);
     }
@@ -160,37 +166,45 @@ window.addEventListener('DOMContentLoaded', () => {
   function formalMinToHours(mins) {
     const hrs = Math.floor(mins / 60);
     const min = mins % 60;
-    return `${hrs}:${min.toString().padEnd(2, '0')}`;
+    return `${hrs}ч ${min.toString().padEnd(2, '0')}м`;
   }
 
-  async function getMovieGenres() {
-    const URL = 'https://api.themoviedb.org/3/genre/movie/list?language=ru';
-    try {
-      const response = await fetch(URL, options)
-      const data = await response.json();
-      console.log('Жанры фильмов:', data);
-
-      return data;
-    } catch (error) {
-      console.log(error);
-
+  function capitalize(str) {
+    if (str) {
+      return str[0].toUpperCase() + str.substring(1).toLowerCase();
+    } else {
+      return '';
     }
-  }
+  };
 
-  async function getTvGenres() {
-    const URL = 'https://api.themoviedb.org/3/genre/tv/list?language=ru';
-    try {
-      const response = await fetch(URL, options)
-      const data = await response.json();
-      console.log('Жанры ТВ сериалов:', data);
+  // async function getMovieGenres() {
+  //   const URL = 'https://api.themoviedb.org/3/genre/movie/list?language=ru';
+  //   try {
+  //     const response = await fetch(URL, options)
+  //     const data = await response.json();
+  //     console.log('Жанры фильмов:', data);
+
+  //     return data;
+  //   } catch (error) {
+  //     console.log(error);
+
+  //   }
+  // }
+
+  // async function getTvGenres() {
+  //   const URL = 'https://api.themoviedb.org/3/genre/tv/list?language=ru';
+  //   try {
+  //     const response = await fetch(URL, options)
+  //     const data = await response.json();
+  //     console.log('Жанры ТВ сериалов:', data);
 
 
-      return data;
-    } catch (error) {
-      console.log(error);
+  //     return data;
+  //   } catch (error) {
+  //     console.log(error);
 
-    }
-  }
+  //   }
+  // }
 
   // getMovieGenres();
   // getTvGenres();

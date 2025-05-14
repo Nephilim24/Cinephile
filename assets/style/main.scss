@@ -17,7 +17,7 @@ ul {
   list-style: none;
 }
 
-a {
+А a {
   text-decoration: none;
   color: inherit;
 }
@@ -169,10 +169,20 @@ main {
   }
 
   &__info {
-    min-height: 700px;
+    height: 0;
+    opacity: 0;
+    transition: .5s;
     background: linear-gradient(90deg, #000 30%, rgba(0, 0, 0, 0.2) 100%, rgba(0, 0, 0, 0) 68.23%);
     padding: 114px 50px;
+    display: none;
     position: relative;
+
+    &.active {
+      min-height: 700px;
+      height: 100%;
+      display: block;
+      opacity: 1;
+    }
 
     &-content {
       display: flex;
