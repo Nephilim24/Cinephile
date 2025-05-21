@@ -184,6 +184,21 @@ main {
       opacity: 1;
     }
 
+    & button {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      width: 56px;
+      height: 56px;
+      font-size: 17px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      background: rgba(20, 20, 20, 0.7);
+    }
+
     &-content {
       display: flex;
       flex-direction: column;

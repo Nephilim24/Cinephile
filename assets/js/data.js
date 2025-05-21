@@ -49,7 +49,7 @@ window.addEventListener('DOMContentLoaded', () => {
     headerNextButton.append(nextBg);
     headerNextButton.addEventListener('click', update);
     matSwiper = document.querySelectorAll('.mat');
-    matInfo = document.querySelector('.mat__info')
+    matInfo = document.querySelector('.mat__info');
     topSwiper = document.querySelector('.top');
   }
 
@@ -117,32 +117,28 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   async function getDetail(id, type) {
-    const typeData = type === 'movies' ? 'movie' : 'tv';
-    const URL = `https://api.themoviedb.org/3/${typeData}/${id}?language=ru-RU`;
+    const typeData = (type === 'movies') ? 'movie' : 'tv';
+
     try {
+      const URL = `https://api.themoviedb.org/3/${typeData}/${id}?language=ru-RU`;
       const response = await fetch(URL, options);
       const data = await response.json();
-      console.log(data);
-
-      const content = matInfo.querySelector('.mat__info-content');
-      // console.log(await getActors(data.id));
-
-      content.innerHTML = '';
-      console.log(type);
-
-      content.innerHTML = `
+      // 
+      const section = document.getElementById(type);
+      const content = section.querySelector('.mat__info-content');
+      const htmlData = `
         <h2>${data.title ?? data.name}</h2>
         <p>${data.overview}</p>
       <p>
         ${data.release_date ?? data.first_air_date}
         \t${data.genres.map(genre => `${capitalize(genre.name)} `)}
-        \t${formalMinToHours(data.runtime) ?? `${data.episode_run_time[0]}`}
+        \t${formalMinToHours(data.runtime) ?? data.episode_run_time[0]}
       </p>
         <img src="${imgPath}${data.backdrop_path}">
       `
-      document.getElementById(type).querySelector('.mat__info').classList.add('active');
-
-      // <p>${getActors(data.id).map(name)}</p>
+      content.innerHTML = htmlData;
+      section.querySelector('.mat__info').classList.add('active');
+      section.querySelector('button').addEventListener('click', () => section.querySelector('.mat__info').classList.remove('active'));
     } catch (error) {
       console.log(error);
     }
@@ -155,13 +151,12 @@ window.addEventListener('DOMContentLoaded', () => {
       const data = await response.json();
       const actors = data.cast.splice(0, 4);
       return actors;
-
-
     } catch (error) {
       console.log(error);
 
     }
   }
+
 
   function formalMinToHours(mins) {
     const hrs = Math.floor(mins / 60);
@@ -177,65 +172,36 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // async function getMovieGenres() {
-  //   const URL = 'https://api.themoviedb.org/3/genre/movie/list?language=ru';
-  //   try {
-  //     const response = await fetch(URL, options)
-  //     const data = await response.json();
-  //     console.log('Жанры фильмов:', data);
+  async function getTopData() {
+    try {
+      const URL = 'https://api.themoviedb.org/3/movie/top_rated?language=ru-RU&page=1';
+      const response = await fetch(URL, options);
+      const data = await response.json();
+      const top10 = data.results.splice(0, 10);
+      console.log(top10);
 
-  //     return data;
-  //   } catch (error) {
-  //     console.log(error);
+      return data;
 
-  //   }
-  // }
+    } catch (error) {
+      console.log(error);
 
-  // async function getTvGenres() {
-  //   const URL = 'https://api.themoviedb.org/3/genre/tv/list?language=ru';
-  //   try {
-  //     const response = await fetch(URL, options)
-  //     const data = await response.json();
-  //     console.log('Жанры ТВ сериалов:', data);
-
-
-  //     return data;
-  //   } catch (error) {
-  //     console.log(error);
-
-  //   }
-  // }
-
-  // getMovieGenres();
-  // getTvGenres();
-
+    }
+  }
+  getTopData();
 
 });
 
 
 
-/*async function setTopData() {
-  for (let i = 0; i < topSwiper.length; i++) {
-    const wrapper = topSwiper[i].querySelector('.swiper-wrapper')
-    const data = await getTopData();
-    data.forEach(item => {
-      const topItem = document.createElement('div');
-      topItem.classList.add('top__swiper-slide');
-      topItem.innerHTML = (`<img src="${imgPathMini}${item.poster_path}" alt="">`);
-      wrapper.append(topItem);
-    });
-  }
-}
-
-async function getTopData() {
-  try {
-    const URL = 'https://api.themoviedb.org/3/movie/top_rated?language=ru-RU&page=1';
-    const response = await fetch(URL, options);
-    const data = await response.json();
-    return data.results;
-
-  } catch (error) {
-    console.log(error);
-
-  }
-} */
+// async function setTopData() {
+//   for (let i = 0; i < topSwiper.length; i++) {
+//     const wrapper = topSwiper[i].querySelector('.swiper-wrapper')
+//     const data = await getTopData();
+//     data.forEach(item => {
+//       const topItem = document.createElement('div');
+//       topItem.classList.add('top__swiper-slide');
+//       topItem.innerHTML = (`<img src="${imgPathMini}${item.poster_path}" alt="">`);
+//       wrapper.append(topItem);
+//     });
+//   }
+// }
